@@ -5,8 +5,8 @@ public class CameraMove : MonoBehaviour
     public float MoveSpeed = 0.5f;      // Speed for lateral movement
     public float RotationSpeed = 50f;   // Speed for rotation
     public float ZoomSpeed = 2f;        // Speed for zooming in and out
-    public float MinZoom = 2f;          // Minimum distance to prevent too close zoom
-    public float MaxZoom = 10f;         // Maximum distance to prevent too far zoom
+    public float MinZoom = 0.5f;          // Minimum distance to prevent too close zoom
+    public float MaxZoom = 14f;         // Maximum distance to prevent too far zoom
     public GameObject Container;        // Target object to orbit around
     private Vector3 offset;             // Distance offset between camera and target
     private Vector3 initPos;            // Initial position of the camera
