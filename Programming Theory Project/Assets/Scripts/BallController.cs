@@ -68,21 +68,12 @@ public class BallController : MonoBehaviour
 	// private void Merge(B)
 	void OnCollisionEnter(Collision collision)
 	{
-		Debug.Log("Collision Entered!");
-		// GameManager.Instance.BallMovementCompleted();
+		// Debug.Log("Collision Entered!");
 		if(gameObject.CompareTag(collision.gameObject.tag) && !isDropped)
 		{
-			GameManager.Instance.UpdatePoint(point);
 			GameManager.Instance.Merge(gameObject, collision.gameObject);
-			// call update point method from GameManager
-			// GameManager.AddPoint(point);
-			// Destroy(collision.gameObject);
-			// Destroy(gameObject);
 		}
+		GameManager.Instance.UpdatePoint(point);
 		isDropped = true;
-		// else if(collision.gameObject.CompareTag("Floor"))
-		// {
-			
-		// }
 	}
 }

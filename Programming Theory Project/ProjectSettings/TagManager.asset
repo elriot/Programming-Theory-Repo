@@ -4,9 +4,14 @@
 TagManager:
   serializedVersion: 3
   tags:
+  - Floor
+  - Ball_0
   - Ball_1
   - Ball_2
-  - Floor
+  - Ball_3
+  - Ball_4
+  - Ball_5
+  - Ball_6
   layers:
   - Default
   - TransparentFX

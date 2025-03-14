@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 5818119517928485735}
   - component: {fileID: 380819608116298505}
   m_Layer: 0
-  m_Name: Ball_2
-  m_TagString: Ball_2
+  m_Name: Ball_0
+  m_TagString: Ball_0
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,8 +31,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.55, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e2ff9e8f540564933aa8461acb411a3f, type: 2}
+  - {fileID: 2100000, guid: d4d26f91bc86c4d899eaa9853d601f81, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -152,4 +152,4 @@ MonoBehaviour:
   moveSpeed: 1
   isMovable: 1
   isDropped: 0
-  point: 5
+  point: 1

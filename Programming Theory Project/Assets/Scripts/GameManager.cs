@@ -1,19 +1,23 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 	public static GameManager Instance;
-	public int Level = 1;
-	public int TotalPoint;
 	public GameObject[] BallPrefabs;
+	[SerializeField] private int ballPrefabsIndexRange {get; set;}
+	public int TotalPoint;
 	public Vector3 SpawnPos;
 	private BallController currentBall;
+	private int ballPrefabsLength;
 
 	// Update is called once per frame
 	void Start()
 	{
+		ballPrefabsLength = BallPrefabs.Length;
+		ballPrefabsIndexRange = 0;
 		if(Instance == null)
 		{
 			Instance = this;
@@ -31,10 +35,10 @@ public class GameManager : MonoBehaviour
 	private void SpawnBall()
 	{	
 		Debug.Log("SpawnBall");
-		int idx = UnityEngine.Random.Range(0, Level);
-		if(idx >= Level)
+		int idx = UnityEngine.Random.Range(0, ballPrefabsIndexRange);
+		if(idx > ballPrefabsIndexRange)
 		{
-			Debug.Log("Out of Range - Ball Index");
+			Debug.Log($"Out of Range - Ball Index : {idx}");
 			return;
 		}
 
@@ -44,14 +48,15 @@ public class GameManager : MonoBehaviour
 		currentBall.isDropped = false;
 	}
 
-	private void SpawnMergeBall(Vector3 spawnPos, int level)
+	private void SpawnMergeBall(Vector3 spawnPos, int ballIndex)
 	{
-		Debug.Log("spawn merge ball " + level + " " + spawnPos);
-		// GameObject targetBall = BallPrefabs[level-1].gameObject;
-		// Instantiate(targetBall, spawnPos, targetBall.transform.rotation);
-		// currentBall = null;
-        // currentBall = ballObj.GetComponent<BallController>();
-        // currentBall.isMovable = true;
+		int idx = GetNextBallIndex(ballIndex);
+		Debug.Log($"prefab sizse : {BallPrefabs.Length}, current Index : {idx}");
+		GameObject targetBall = BallPrefabs[idx].gameObject;
+		GameObject newBall = Instantiate(targetBall, spawnPos, targetBall.transform.rotation);
+		
+        currentBall = newBall.GetComponent<BallController>();
+        currentBall.isMovable = true;
 	}
 
 	public void Merge(GameObject ball1, GameObject ball2)
@@ -60,14 +65,9 @@ public class GameManager : MonoBehaviour
 		{
 			BallController bc = ball1.GetComponent<BallController>();
 			Vector3 pos = (ball1.transform.position + ball2.transform.position) / 2;
-			int level = GetLevelByTag(bc.gameObject.tag) + 1;
-			Debug.Log($"level : {level}");
+			int ballIndex = GetBallIndexByTag(bc.gameObject.tag); // if ball tag is "Ball_0" then return 0
 
-			Level = Math.Max(level, Level);
-			Debug.Log($"Level : {Level}");
-			SpawnMergeBall(pos, level);
-
-			Debug.Log("Dfd");
+			SpawnMergeBall(pos, ballIndex);
 
 			Destroy(ball1);
 			Destroy(ball2);
@@ -76,10 +76,11 @@ public class GameManager : MonoBehaviour
 
 	public void UpdatePoint(int point)
 	{
-		TotalPoint += point;
+		TotalPoint += point; 
+		// Debug.Log($"update Point : {point}");
 	}
 
-	private int GetLevelByTag(string tag)
+	private int GetBallIndexByTag(string tag)
 	{
 		return int.Parse(tag.Substring(tag.LastIndexOf("_")+1, 1));
 	}
@@ -87,5 +88,15 @@ public class GameManager : MonoBehaviour
 	public void BallMovementCompleted()
 	{
 		currentBall = null;
+	}
+
+	private int GetNextBallIndex(int ballIndex)
+	{
+		if(ballPrefabsLength-1 > ballPrefabsIndexRange && ballPrefabsIndexRange >= ballIndex)
+		{
+			ballPrefabsIndexRange++;
+			Debug.Log($"here BallPrefabsIndexRange : {ballPrefabsIndexRange}");	
+		}
+		return ballPrefabsIndexRange;
 	}
 }
