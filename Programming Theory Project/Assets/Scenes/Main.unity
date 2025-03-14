@@ -172,8 +172,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2.5324502, z: 1}
-  m_Center: {x: 0, y: 0.7662256, z: 0}
+  m_Size: {x: 1, y: 2.6595883, z: 1}
+  m_Center: {x: 0, y: 0.7026567, z: 0}
 --- !u!23 &17666942
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -478,6 +478,7 @@ MonoBehaviour:
   - {fileID: 9064181226360217145, guid: d3ba1f11a85b14710bc9a516932123a5, type: 3}
   - {fileID: 9064181226360217145, guid: 7bec5cdfeddbe4a209cf4707f9bb5a55, type: 3}
   - {fileID: 9064181226360217145, guid: f1ea46edb17f541adaad5ac796728a6e, type: 3}
+  ballPrefabsIndexRange: 0
   TotalPoint: 0
   SpawnPos: {x: 0, y: 0.55, z: 0}
   ScoreText: {fileID: 1591297451}
@@ -549,7 +550,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.5088308, y: 0, z: 1.4284862}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &588219316
 MeshRenderer:
@@ -1057,8 +1058,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2.2696977, z: 1}
-  m_Center: {x: -0, y: 0.63484883, z: 0}
+  m_Size: {x: 1, y: 2.4546232, z: 1}
+  m_Center: {x: -0, y: 0.54238695, z: 0}
 --- !u!23 &1581285644
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1301,8 +1302,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2.084693, z: 1}
-  m_Center: {x: 0, y: 0.5423467, z: 0}
+  m_Size: {x: 1, y: 2.2922068, z: 1}
+  m_Center: {x: 0, y: 0.4385906, z: 0}
 --- !u!23 &1647169018
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1409,8 +1410,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2.7444735, z: 1}
-  m_Center: {x: 0, y: 0.8722367, z: 0}
+  m_Size: {x: 1, y: 2.9409566, z: 1}
+  m_Center: {x: 0, y: 0.7739953, z: 0}
 --- !u!23 &1879882978
 MeshRenderer:
   m_ObjectHideFlags: 0
