@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraMove : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
     public float MoveSpeed = 0.5f;      // Speed for lateral movement
     public float RotationSpeed = 50f;   // Speed for rotation
