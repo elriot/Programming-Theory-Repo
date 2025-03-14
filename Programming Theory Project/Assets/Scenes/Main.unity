@@ -480,7 +480,7 @@ MonoBehaviour:
   - {fileID: 9064181226360217145, guid: f1ea46edb17f541adaad5ac796728a6e, type: 3}
   ballPrefabsIndexRange: 0
   TotalPoint: 0
-  SpawnPos: {x: 0, y: 0.55, z: 0}
+  SpawnPos: {x: 0, y: 0.8, z: 0}
   ScoreText: {fileID: 1591297451}
 --- !u!4 &501586064
 Transform:

@@ -1,11 +1,14 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BallController : MonoBehaviour
 {
 	private Rigidbody rb;
 	public float moveSpeed = 3f;
 	public bool isMovable = false;
-	// public int level; // 
+	private float lastInputTime = 0f;
+    private float inputCooldown = 2f;
 
 	void Start()
 	{
@@ -15,10 +18,11 @@ public class BallController : MonoBehaviour
 
 	void Update()
 	{
-		if (isMovable && Input.GetKeyDown(KeyCode.Space))
-		{
-			Drop();
-		}
+        if (isMovable && Input.GetKeyDown(KeyCode.Space) && ((lastInputTime == 0f) || (Time.time - lastInputTime >= inputCooldown)))
+        {
+            Drop();
+            lastInputTime = Time.time;
+        }
 	}
 
 	void FixedUpdate()
