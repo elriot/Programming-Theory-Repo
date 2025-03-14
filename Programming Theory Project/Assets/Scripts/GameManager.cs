@@ -1,6 +1,8 @@
 using System;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +12,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private int ballPrefabsIndexRange {get; set;}
 	public int TotalPoint;
 	public Vector3 SpawnPos;
+	public TMP_Text ScoreText;
 	private BallController currentBall;
 	private int ballPrefabsLength;
 
@@ -22,6 +25,7 @@ public class GameManager : MonoBehaviour
 		{
 			Instance = this;
 		}
+		UpdateScoreText(TotalPoint);
 	}
 	void Update()
     {
@@ -51,23 +55,22 @@ public class GameManager : MonoBehaviour
 	private void SpawnMergeBall(Vector3 spawnPos, int ballIndex)
 	{
 		int idx = GetNextBallIndex(ballIndex);
-		Debug.Log($"prefab sizse : {BallPrefabs.Length}, current Index : {idx}");
+		Debug.Log($"[SpawnMergeBall] prefab sizs : {BallPrefabs.Length}, current Index : {idx}");
 		GameObject targetBall = BallPrefabs[idx].gameObject;
 		GameObject newBall = Instantiate(targetBall, spawnPos, targetBall.transform.rotation);
-		
-        currentBall = newBall.GetComponent<BallController>();
-        currentBall.isMovable = true;
 	}
 
 	public void Merge(GameObject ball1, GameObject ball2)
 	{
 		// if(ball1 != null && ball2 != null)
 		{
+			Debug.Log("Merge ball");
 			BallController bc = ball1.GetComponent<BallController>();
 			Vector3 pos = (ball1.transform.position + ball2.transform.position) / 2;
 			int ballIndex = GetBallIndexByTag(bc.gameObject.tag); // if ball tag is "Ball_0" then return 0
 
 			SpawnMergeBall(pos, ballIndex);
+			currentBall = null;
 
 			Destroy(ball1);
 			Destroy(ball2);
@@ -77,7 +80,12 @@ public class GameManager : MonoBehaviour
 	public void UpdatePoint(int point)
 	{
 		TotalPoint += point; 
+		UpdateScoreText(TotalPoint);
 		// Debug.Log($"update Point : {point}");
+	}
+	private void UpdateScoreText(int score)
+	{
+		ScoreText.text = $"Score : {score}";
 	}
 
 	private int GetBallIndexByTag(string tag)
