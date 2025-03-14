@@ -152,4 +152,4 @@ MonoBehaviour:
   moveSpeed: 1
   isMovable: 1
   isDropped: 0
-  point: 0
+  point: 5

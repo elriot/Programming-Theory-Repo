@@ -6,7 +6,7 @@ public class BallController : MonoBehaviour
 	private Rigidbody rb;
 	public float moveSpeed = 3f;
 	private GameObject cameraContainer;
-	public bool isMovable = true;
+	public bool isMovable = true ;
 	public bool isDropped = false;
 	public int point;
 	
@@ -62,19 +62,27 @@ public class BallController : MonoBehaviour
 	{
 		rb.useGravity = true;
 		isMovable = false;
-		isDropped = true;
+		// isDropped = true; // isDropped should be true when ball touchs floor or another balls;
 	}
 
 	// private void Merge(B)
 	void OnCollisionEnter(Collision collision)
 	{
-		Debug.Log("Oncollison called");
-		if(gameObject.tag == collision.gameObject.tag)
+		Debug.Log("Collision Entered!");
+		// GameManager.Instance.BallMovementCompleted();
+		if(gameObject.CompareTag(collision.gameObject.tag) && !isDropped)
 		{
+			GameManager.Instance.UpdatePoint(point);
+			GameManager.Instance.Merge(gameObject, collision.gameObject);
 			// call update point method from GameManager
 			// GameManager.AddPoint(point);
-			Destroy(collision.gameObject);
-			Destroy(gameObject);
+			// Destroy(collision.gameObject);
+			// Destroy(gameObject);
 		}
+		isDropped = true;
+		// else if(collision.gameObject.CompareTag("Floor"))
+		// {
+			
+		// }
 	}
 }

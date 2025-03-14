@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ball_1
   - Ball_2
+  - Floor
   layers:
   - Default
   - TransparentFX
