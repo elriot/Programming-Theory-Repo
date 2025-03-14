@@ -8,6 +8,7 @@ public class BallController : MonoBehaviour
 	private GameObject cameraContainer;
 	public bool isMovable = true;
 	public bool isDropped = false;
+	public int point;
 	
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,21 +22,22 @@ public class BallController : MonoBehaviour
 			Debug.LogError("Camera container not found!");
 		}
     }
-
-    void FixedUpdate()
+	void Update()
 	{
-		MoveBall();
-
 		if (isMovable && Input.GetKeyDown(KeyCode.Space))
 		{
 			Drop();
 		}
 	}
+	void FixedUpdate()
+	{
+		MoveBall();
+	}
 
 	private void MoveBall()
 	{
 		if(!isMovable) return;
-		
+
 		float horizontalInput = Input.GetAxis("Arrow Horizontal"); // Left, Right Arrow
 		float verticalInput = Input.GetAxis("Arrow Vertical");     // Up, Down Arrow
 
@@ -56,10 +58,23 @@ public class BallController : MonoBehaviour
 		// rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
 	}
 
-	void Drop()
+	private void Drop()
 	{
 		rb.useGravity = true;
 		isMovable = false;
 		isDropped = true;
+	}
+
+	// private void Merge(B)
+	void OnCollisionEnter(Collision collision)
+	{
+		Debug.Log("Oncollison called");
+		if(gameObject.tag == collision.gameObject.tag)
+		{
+			// call update point method from GameManager
+			// GameManager.AddPoint(point);
+			Destroy(collision.gameObject);
+			Destroy(gameObject);
+		}
 	}
 }
