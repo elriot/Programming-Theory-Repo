@@ -151,5 +151,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   isMovable: 0
-  isDropped: 0
-  point: 1
+  level: 1

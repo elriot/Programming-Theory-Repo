@@ -1,82 +1,74 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BallController : MonoBehaviour
 {
-	private Rigidbody rb;
-	public float moveSpeed = 3f;
-	private GameObject cameraContainer;
-	public bool isMovable = true ;
-	public bool isDropped = false;
-	public int point;
-	
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Rigidbody rb;
+    public float moveSpeed = 3f;
+    public bool isMovable = false;
+    // public int level; // 
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-		rb.useGravity = false;
-
-		cameraContainer = GameObject.Find("Camera");
-		if (cameraContainer == null)
-		{
-			Debug.LogError("Camera container not found!");
-		}
+        rb.useGravity = false;
     }
-	void Update()
-	{
-		if (isMovable && Input.GetKeyDown(KeyCode.Space))
-		{
-			Drop();
-		}
-	}
-	void FixedUpdate()
-	{
-		MoveBall();
-	}
 
-	private void MoveBall()
-	{
-		if(!isMovable) return;
+    void Update()
+    {
+        if (isMovable && Input.GetKeyDown(KeyCode.Space))
+        {
+            Drop();
+        }
+    }
 
-		float horizontalInput = Input.GetAxis("Arrow Horizontal"); // Left, Right Arrow
-		float verticalInput = Input.GetAxis("Arrow Vertical");     // Up, Down Arrow
+    void FixedUpdate()
+    {
+        MoveBall();
+    }
 
-		Vector3 forward = cameraContainer.transform.forward;
-		Vector3 right = cameraContainer.transform.right;
+    private void MoveBall()
+    {
+        if (!isMovable) return;
 
-		// Only move horizontally (ignore Y axis)w
-		forward.y = 0f;
-		right.y = 0f;
+        float horizontalInput = Input.GetAxis("Arrow Horizontal");
+        float verticalInput = Input.GetAxis("Arrow Vertical");
 
-		forward.Normalize();
-		right.Normalize();
+        Vector3 movement = new Vector3(horizontalInput, 0, verticalInput).normalized;
+        transform.Translate(movement * moveSpeed * Time.fixedDeltaTime);
+    }
 
-		Vector3 movement = (right * horizontalInput + forward * verticalInput).normalized;
+    private void Drop()
+    {
+        rb.useGravity = true;
+        isMovable = false;
+    }
 
-		// Move the Rigidbody to avoid physics conflicts
-		transform.Translate(movement * moveSpeed * Time.fixedDeltaTime);
-		// rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
-	}
+    private void OnCollisionEnter(Collision collision)
+    {
+        BallController otherBall = collision.gameObject.GetComponent<BallController>();
 
-	private void Drop()
-	{
-		rb.useGravity = true;
-		isMovable = false;
-		// isDropped = true; // isDropped should be true when ball touchs floor or another balls;
-	}
+        if (otherBall != null && gameObject.tag == otherBall.tag && this.GetInstanceID() < otherBall.GetInstanceID())
+        {
+            Vector3 mergePosition = (transform.position + otherBall.transform.position) / 2;
+            int nextLevel = GetBallIndexByTag(gameObject.tag) + 1;
 
-	// private void Merge(B)
-	void OnCollisionEnter(Collision collision)
-	{
-		if(!isDropped && gameObject.CompareTag(collision.gameObject.tag) && collision.gameObject.GetComponent<BallController>().isDropped)
-		{
-			GameManager.Instance.Merge(gameObject, collision.gameObject);
-		}
+            GameManager.Instance.SpawnMergeBall(mergePosition, nextLevel);
 
-		if (!isDropped)
-		{
-			isDropped = true;
-			GameManager.Instance.UpdatePoint(point);
-		}
-	}
+            // 기존 볼 파괴
+            Destroy(gameObject);
+            Destroy(otherBall.gameObject);
+        }
+    }
+
+	private int GetBallIndexByTag(string tag)
+    {
+        if (string.IsNullOrEmpty(tag) || !tag.Contains("_"))
+        {
+            Debug.LogError($"Invalid tag format: {tag}");
+            return -1;
+        }
+
+        string indexString = tag.Substring(tag.LastIndexOf("_") + 1);
+        return int.TryParse(indexString, out int index) ? index : -1;
+    }
 }

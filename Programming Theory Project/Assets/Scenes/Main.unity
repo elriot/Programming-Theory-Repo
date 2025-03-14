@@ -477,6 +477,7 @@ MonoBehaviour:
   - {fileID: 9064181226360217145, guid: b01eeb44885914e1b8c3eace59e64dcf, type: 3}
   - {fileID: 9064181226360217145, guid: d3ba1f11a85b14710bc9a516932123a5, type: 3}
   - {fileID: 9064181226360217145, guid: 7bec5cdfeddbe4a209cf4707f9bb5a55, type: 3}
+  - {fileID: 9064181226360217145, guid: f1ea46edb17f541adaad5ac796728a6e, type: 3}
   TotalPoint: 0
   SpawnPos: {x: 0, y: 0.55, z: 0}
   ScoreText: {fileID: 1591297451}
