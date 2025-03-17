@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 	// private int idx = 0;
 	private float lastInputTime = 0f;
 	private float inputCooldown = 2f;
+	public GameObject FocalPoint;
 
 	private void Awake()
 	{
@@ -60,9 +61,14 @@ public class GameManager : MonoBehaviour
 		float horizontalInput = Input.GetAxis("Arrow Horizontal");
 		float verticalInput = Input.GetAxis("Arrow Vertical");
 
-		Vector3 movement = new Vector3(horizontalInput, 0, verticalInput).normalized;
+		Transform focalPointTransnform = FocalPoint.transform;
+        Vector3 moveDirection = (focalPointTransnform.forward * verticalInput + focalPointTransnform.right * horizontalInput).normalized;
+
 		Rigidbody rb = currentBall.GetComponent<Rigidbody>();
-		rb.MovePosition(rb.position + movement * currentBall.moveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + moveDirection * currentBall.moveSpeed * Time.fixedDeltaTime);
+		// Vector3 movement = new Vector3(horizontalInput, 0, verticalInput).normalized;
+		// Rigidbody rb = currentBall.GetComponent<Rigidbody>();
+		// rb.MovePosition(rb.position + movement * currentBall.moveSpeed * Time.fixedDeltaTime);
 	}
 
 
