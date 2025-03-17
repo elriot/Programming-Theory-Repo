@@ -151,4 +151,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   isMovable: 0
-  level: 2
