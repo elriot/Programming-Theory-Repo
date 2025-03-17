@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
 		if (!currentBall.isDropped && Input.GetKeyDown(KeyCode.Space))
 		{
 			currentBall.Drop();
+			SoundManager.Instance.PlayDropSound();
 			// lastInputTime = Time.time;
 		}
 	}
@@ -142,6 +143,7 @@ public class GameManager : MonoBehaviour
 
 		Debug.Log($"use gravity after Drop(): {rb.useGravity}");
 		AddPoints(ballController.Point);
+		SoundManager.Instance.PlayMergeSound();
 	}
 
 	public int GetBallIndexByTag(string tag)

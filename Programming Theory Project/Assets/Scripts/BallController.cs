@@ -12,9 +12,12 @@ public class BallController : MonoBehaviour
 	// private float inputCooldown = 2f;
 	public string BallName { get; set; }
 
-	void Start()
+	void Awake()
 	{
 		rb = GetComponent<Rigidbody>();
+	}
+	void Start()
+	{
 		rb.useGravity = isDropped;
 	}
 
