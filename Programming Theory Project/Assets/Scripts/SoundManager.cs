@@ -7,6 +7,7 @@ public class SoundManager : MonoBehaviour
 
 	public AudioClip DropBallSound;
 	public AudioClip MergeBallSound;
+	public AudioClip BGMSound;
 	public float EffectVolume;
 	public float BGMVolume;
 
@@ -25,12 +26,18 @@ public class SoundManager : MonoBehaviour
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
+		if(BGMVolume > 0 && BGMSound != null)
+		{
+			audioSource.loop = true;
+			audioSource.volume = BGMVolume;
+			audioSource.Play();
+		}
     }
 
     public void PlayDropSound()
     {
         PlaySound(DropBallSound);
-		audioSource.PlayOneShot(DropBallSound, 1.0f);
+		audioSource.PlayOneShot(DropBallSound, EffectVolume);
     }
 
     public void PlayMergeSound()
@@ -43,7 +50,7 @@ public class SoundManager : MonoBehaviour
     {
         if (clip != null)
         {
-            audioSource.PlayOneShot(clip);
+            audioSource.PlayOneShot(clip, EffectVolume);
         }
         else
         {

@@ -974,8 +974,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DropBallSound: {fileID: 8300000, guid: af9f934eb4288464eb120a5857921cc3, type: 3}
   MergeBallSound: {fileID: 8300000, guid: ccb9b31174a3a43709a113a9c7cf4252, type: 3}
-  EffectVolume: 2000
-  BGMVolume: 2000
+  BGMSound: {fileID: 8300000, guid: 883634e1c7cb04070aecb71779ed7e1d, type: 3}
+  EffectVolume: 1
+  BGMVolume: 0.3
 --- !u!82 &1513580079
 AudioSource:
   m_ObjectHideFlags: 0
@@ -986,9 +987,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 883634e1c7cb04070aecb71779ed7e1d, type: 3}
+  m_Resource: {fileID: 8300000, guid: 883634e1c7cb04070aecb71779ed7e1d, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
