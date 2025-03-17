@@ -403,6 +403,7 @@ MonoBehaviour:
   TotalPoint: 0
   SpawnPos: {x: 0, y: 0.8, z: 0}
   ScoreText: {fileID: 1591297451}
+  FocalPoint: {fileID: 2089054856}
 --- !u!4 &501586064
 Transform:
   m_ObjectHideFlags: 0
@@ -1397,7 +1398,7 @@ GameObject:
   - component: {fileID: 2089054858}
   - component: {fileID: 2089054857}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: Focal Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
