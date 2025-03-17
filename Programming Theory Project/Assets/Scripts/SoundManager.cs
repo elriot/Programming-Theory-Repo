@@ -3,13 +3,14 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
-	private AudioSource audioSource;
+	private AudioSource musicSource;
+	private AudioSource sfxSource;
 
 	public AudioClip DropBallSound;
 	public AudioClip MergeBallSound;
-	public AudioClip BGMSound;
 	public AudioClip GameOverSound;
-	public float EffectVolume;
+	public AudioClip BackgroundMusic;
+	public float SFXVolume;
 	public float BGMVolume;
 
 	void Awake()
@@ -22,40 +23,58 @@ public class SoundManager : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
-	}
 
+		        
+        musicSource = gameObject.AddComponent<AudioSource>();
+        musicSource.loop = true; // 반복 재생
+        musicSource.playOnAwake = false;
+        musicSource.volume = BGMVolume; // 기본 볼륨 설정
+
+        // 효과음용 AudioSource 생성
+        sfxSource = gameObject.AddComponent<AudioSource>();
+        sfxSource.playOnAwake = false;
+	}
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-		if(BGMVolume > 0 && BGMSound != null)
-		{
-			audioSource.loop = true;
-			audioSource.volume = BGMVolume;
-			audioSource.Play();
-		}
+        // 게임 시작과 함께 배경음악 재생
+        PlayBackgroundMusic();
     }
 
-    public void PlayDropSound()
+    // 배경음악 재생
+    public void PlayBackgroundMusic()
     {
-        PlaySound(DropBallSound, EffectVolume);
+        if (BackgroundMusic != null)
+        {
+            musicSource.clip = BackgroundMusic;
+            musicSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Background music clip is not assigned.");
+        }
+    }
+
+	public void PlayDropSound()
+    {
+        PlaySFXSound(DropBallSound, SFXVolume);
     }
 
     public void PlayMergeSound()
     {
-        PlaySound(MergeBallSound, EffectVolume);
+        PlaySFXSound(MergeBallSound, SFXVolume);
     }
 
 	public void PlayGameOverSound()
 	{
-		PlaySound(GameOverSound, EffectVolume);
+		PlaySFXSound(GameOverSound, SFXVolume);
 	}
 
 
-    private void PlaySound(AudioClip clip, float volume)
+    private void PlaySFXSound(AudioClip clip, float volume)
     {
         if (clip != null)
         {
-            audioSource.PlayOneShot(clip, volume);
+            sfxSource.PlayOneShot(clip, volume);
         }
         else
         {

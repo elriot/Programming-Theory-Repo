@@ -41,7 +41,7 @@ public class BallController : MonoBehaviour
 
 		if (otherBall != null && gameObject.tag == otherBall.tag && gameObject.GetInstanceID() > otherBall.GetInstanceID())
 		{
-			Debug.Log("Merge!");
+			//Debug.Log("Merge!");
 			Vector3 mergePosition = (transform.position + otherBall.transform.position) / 2;
 			int nextLevel = gameManager.GetBallIndexByTag(gameObject.tag) + 1;
 
@@ -69,7 +69,7 @@ public class BallController : MonoBehaviour
 
 		if (rb == null)
 		{
-			Debug.LogError("Rigidbody is missing!");
+			//Debug.LogError("Rigidbody is missing!");
 			return;
 		}
 
@@ -77,7 +77,7 @@ public class BallController : MonoBehaviour
 	}
 	void OnTriggerEnter(Collider other)
 	{
-		Debug.Log($"OnTriggerEnter !! {other.gameObject.tag}, currentBall : {gameObject.tag}");
+		//Debug.Log($"OnTriggerEnter !! {other.gameObject.tag}, currentBall : {gameObject.tag}");
 		if(other.CompareTag("GameOverLine") && !gameManager.isCurrentBall(gameObject))
 		{
 			gameManager.GameOver();
