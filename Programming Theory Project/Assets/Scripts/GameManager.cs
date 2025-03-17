@@ -128,12 +128,10 @@ public class GameManager : MonoBehaviour
 		if (rb == null)
 		{
 			Debug.LogError("Rigidbody is missing from the merged ball prefab!");
+			return;
 		}
 
-		// 먼저 isDropped 설정
 		ballController.isDropped = true;
-
-		// 그 다음 Drop 호출 (Start()보다 먼저 호출됨)
 		ballController.Drop();
 
 		Debug.Log($"use gravity after Drop(): {rb.useGravity}");
