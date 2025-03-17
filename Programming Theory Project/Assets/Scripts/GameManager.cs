@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private int ballPrefabsIndexRange;
 	public int TotalPoint;
 	public Vector3 SpawnPos;
-	public TMP_Text ScoreText;
+	public TMP_Text CurrentScoreText;
+	public TMP_Text BestScoreText;
+	public GameObject GameOverScreen;
 	private BallController currentBall;
 	private int BallPrefabsLength => BallPrefabs.Length;
 	// private int idx = 0;
@@ -38,17 +41,25 @@ public class GameManager : MonoBehaviour
 
 	private void Update()
 	{
-		if(isGameOver) return;
-
-		if (currentBall == null)
-			SpawnBall();
-
-		// if (!currentBall.isDropped && Input.GetKeyDown(KeyCode.Space) && ((lastInputTime == 0f) || (Time.time - lastInputTime >= inputCooldown)))
-		if (!currentBall.isDropped && Input.GetKeyDown(KeyCode.Space))
+		if(isGameOver)
 		{
-			currentBall.Drop();
-			SoundManager.Instance.PlayDropSound();
-			// lastInputTime = Time.time;
+			if(Input.GetKeyDown(KeyCode.Space))
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			}
+		}
+		else
+		{
+			if (currentBall == null)
+				SpawnBall();
+
+			// if (!currentBall.isDropped && Input.GetKeyDown(KeyCode.Space) && ((lastInputTime == 0f) || (Time.time - lastInputTime >= inputCooldown)))
+			if (!currentBall.isDropped && Input.GetKeyDown(KeyCode.Space))
+			{
+				currentBall.Drop();
+				SoundManager.Instance.PlayDropSound();
+				// lastInputTime = Time.time;
+			}
 		}
 	}
 
@@ -110,7 +121,7 @@ public class GameManager : MonoBehaviour
 
 	private void UpdateScoreText()
 	{
-		ScoreText.text = $"Score : {TotalPoint}";
+		CurrentScoreText.text = $"Score : {TotalPoint}";
 	}
 
 	public void BallMovementCompleted(BallController ball)
@@ -168,6 +179,7 @@ public class GameManager : MonoBehaviour
 		Debug.Log("GAME OVER!!!!!!!");
 		SoundManager.Instance.PlayGameOverSound();
 		isGameOver = true;
+		GameOverScreen.SetActive(true);
 	}
 
 	public bool isCurrentBall(GameObject ball)
