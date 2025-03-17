@@ -34,7 +34,8 @@ public class GameManager : MonoBehaviour
 
 	private void Update()
 	{
-
+		if(currentBall == null)
+			SpawnBall();
 	}
 
 	public void SpawnBall()
@@ -76,6 +77,11 @@ public class GameManager : MonoBehaviour
 
 	public void BallMovementCompleted(BallController ball)
 	{
+		if(currentBall == null)
+		{
+			Debug.Log("current Ball null");
+			return;
+		}
 		BallController ballBc = ball.GetComponent<BallController>();
 		Debug.Log($"ball deactivate ! currentBall is {currentBall.BallName}, ball is {ballBc.BallName}");
 		Debug.Log($"do they same object? {ball == currentBall}");
@@ -97,6 +103,7 @@ public class GameManager : MonoBehaviour
 
 		GameObject newBall = Instantiate(BallPrefabs[level], position, Quaternion.identity);
 		BallController ballController = newBall.GetComponent<BallController>();
+		newBall.GetComponent<Rigidbody>().useGravity = true;
 		ballController.isMovable = false;
 	}
 

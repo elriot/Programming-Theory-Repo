@@ -46,11 +46,13 @@ public class BallController : MonoBehaviour
 	{
 		rb.useGravity = true;
 		isMovable = false;
-		GameManager.Instance.SpawnBall();
 	}
 
 	private void OnCollisionEnter(Collision collision)
 	{
+		if(collision.gameObject.CompareTag("Wall"))
+			return;
+
 		BallController otherBall = collision.gameObject.GetComponent<BallController>();
 
 		if (otherBall != null && gameObject.tag == otherBall.tag && gameObject.GetInstanceID() > otherBall.GetInstanceID())
@@ -59,14 +61,14 @@ public class BallController : MonoBehaviour
 			int nextLevel = GameManager.Instance.GetBallIndexByTag(gameObject.tag) + 1;
 
 			GameManager.Instance.SpawnMergeBall(mergePosition, nextLevel);
-			GameManager.Instance.BallMovementCompleted(this);
+			
 			Debug.Log($"collision curr {gameObject.name}, collision obj {collision.gameObject.name} ");
 			Destroy(gameObject);
 			Destroy(otherBall.gameObject);
+			GameManager.Instance.BallMovementCompleted(this);
 		}
-		else if(collision.gameObject.CompareTag("Floor"))
+		else if(collision.gameObject.CompareTag("Floor") || (otherBall != null && !otherBall.isMovable && !isMovable))
 		{
-			Debug.Log($"hit the floot {BallName}");
 			GameManager.Instance.BallMovementCompleted(this);
 		}
 	}
