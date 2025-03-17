@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 	private float lastInputTime = 0f;
 	private float inputCooldown = 2f;
 	public GameObject FocalPoint;
+	public bool isGameOver {get; private set;}
 
 	private void Awake()
 	{
@@ -37,6 +38,8 @@ public class GameManager : MonoBehaviour
 
 	private void Update()
 	{
+		if(isGameOver) return;
+
 		if (currentBall == null)
 			SpawnBall();
 
@@ -51,6 +54,8 @@ public class GameManager : MonoBehaviour
 
 	void FixedUpdate()
 	{
+		if(isGameOver) return;
+		
 		if (currentBall != null)
 			MoveCurrentBall();
 	}
@@ -156,5 +161,17 @@ public class GameManager : MonoBehaviour
 
 		string indexString = tag.Substring(tag.LastIndexOf("_") + 1);
 		return int.TryParse(indexString, out int index) ? index : -1;
+	}
+
+	public void GameOver()
+	{
+		Debug.Log("GAME OVER!!!!!!!");
+		SoundManager.Instance.PlayGameOverSound();
+		isGameOver = true;
+	}
+
+	public bool isCurrentBall(GameObject ball)
+	{
+		return ball.GetComponent<BallController>().GetInstanceID() == currentBall.GetInstanceID();
 	}
 }

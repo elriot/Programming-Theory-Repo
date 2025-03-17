@@ -8,6 +8,7 @@ public class SoundManager : MonoBehaviour
 	public AudioClip DropBallSound;
 	public AudioClip MergeBallSound;
 	public AudioClip BGMSound;
+	public AudioClip GameOverSound;
 	public float EffectVolume;
 	public float BGMVolume;
 
@@ -36,21 +37,25 @@ public class SoundManager : MonoBehaviour
 
     public void PlayDropSound()
     {
-        PlaySound(DropBallSound);
-		audioSource.PlayOneShot(DropBallSound, EffectVolume);
+        PlaySound(DropBallSound, EffectVolume);
     }
 
     public void PlayMergeSound()
     {
-        PlaySound(MergeBallSound);
+        PlaySound(MergeBallSound, EffectVolume);
     }
 
-    // 일반적인 사운드 재생 함수
-    private void PlaySound(AudioClip clip)
+	public void PlayGameOverSound()
+	{
+		PlaySound(GameOverSound, EffectVolume);
+	}
+
+
+    private void PlaySound(AudioClip clip, float volume)
     {
         if (clip != null)
         {
-            audioSource.PlayOneShot(clip, EffectVolume);
+            audioSource.PlayOneShot(clip, volume);
         }
         else
         {

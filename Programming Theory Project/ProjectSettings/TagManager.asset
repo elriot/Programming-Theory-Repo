@@ -13,6 +13,7 @@ TagManager:
   - Ball_5
   - Ball_6
   - Wall
+  - GameOverLine
   layers:
   - Default
   - TransparentFX
