@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
 	public Vector3 SpawnPos;
 	public TMP_Text ScoreText;
 	private BallController currentBall;
-
 	private int BallPrefabsLength => BallPrefabs.Length;
+	private int idx = 0;
 
 	private void Awake()
 	{
@@ -29,18 +29,17 @@ public class GameManager : MonoBehaviour
 	{
 		ballPrefabsIndexRange = 1;
 		UpdateScoreText();
+		SpawnBall();
 	}
 
 	private void Update()
 	{
-		if (currentBall == null)
-		{
-			SpawnBall();
-		}
+
 	}
 
-	private void SpawnBall()
+	public void SpawnBall()
 	{
+		Debug.Log("Spawn Ball");
 		if (ballPrefabsIndexRange < 0)
 		{
 			Debug.LogError("Ball Prefabs Index Range is zero or negative.");
@@ -54,10 +53,13 @@ public class GameManager : MonoBehaviour
 			return;
 		}
 
-		Debug.Log($"Spawn Ball Index : {idx}");
+		
 		GameObject ballObj = Instantiate(BallPrefabs[idx], SpawnPos, Quaternion.identity);
 		currentBall = ballObj.GetComponent<BallController>();
 		currentBall.isMovable = true;
+		currentBall.BallName = "ball_" + idx;
+		Debug.Log($"Spawn Ball Index : {idx}, name : {currentBall.BallName}");
+		idx++;
 	}
 
 
@@ -72,13 +74,21 @@ public class GameManager : MonoBehaviour
 		ScoreText.text = $"Score : {TotalPoint}";
 	}
 
-	public void BallMovementCompleted()
+	public void BallMovementCompleted(BallController ball)
 	{
-		currentBall = null;
+		BallController ballBc = ball.GetComponent<BallController>();
+		Debug.Log($"ball deactivate ! currentBall is {currentBall.BallName}, ball is {ballBc.BallName}");
+		Debug.Log($"do they same object? {ball == currentBall}");
+		if(ball.BallName == currentBall.BallName)
+		{
+			Debug.Log("here");
+			currentBall = null;
+		}
 	}
 
 	public void SpawnMergeBall(Vector3 position, int level)
 	{
+		Debug.Log($"Spawn Merge Ball : {level}");
 		if (level < 0 || level >= BallPrefabs.Length)
 		{
 			Debug.LogError("Invalid level for spawning merge ball.");

@@ -9,6 +9,7 @@ public class BallController : MonoBehaviour
 	public bool isMovable = false;
 	private float lastInputTime = 0f;
     private float inputCooldown = 2f;
+	public string BallName {get; set;}
 
 	void Start()
 	{
@@ -45,26 +46,28 @@ public class BallController : MonoBehaviour
 	{
 		rb.useGravity = true;
 		isMovable = false;
+		GameManager.Instance.SpawnBall();
 	}
 
 	private void OnCollisionEnter(Collision collision)
 	{
 		BallController otherBall = collision.gameObject.GetComponent<BallController>();
 
-		if (otherBall != null && gameObject.tag == otherBall.tag && this.GetInstanceID() < otherBall.GetInstanceID())
+		if (otherBall != null && gameObject.tag == otherBall.tag && gameObject.GetInstanceID() > otherBall.GetInstanceID())
 		{
 			Vector3 mergePosition = (transform.position + otherBall.transform.position) / 2;
 			int nextLevel = GameManager.Instance.GetBallIndexByTag(gameObject.tag) + 1;
 
 			GameManager.Instance.SpawnMergeBall(mergePosition, nextLevel);
-
+			GameManager.Instance.BallMovementCompleted(this);
+			Debug.Log($"collision curr {gameObject.name}, collision obj {collision.gameObject.name} ");
 			Destroy(gameObject);
 			Destroy(otherBall.gameObject);
-			GameManager.Instance.BallMovementCompleted();
 		}
 		else if(collision.gameObject.CompareTag("Floor"))
 		{
-			GameManager.Instance.BallMovementCompleted();
+			Debug.Log($"hit the floot {BallName}");
+			GameManager.Instance.BallMovementCompleted(this);
 		}
 	}
 }
