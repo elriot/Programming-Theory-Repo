@@ -149,6 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0b892c4bfaea4ee5ae3d20c9ac14acf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
   moveSpeed: 1
   isDropped: 0
+  Point: 1

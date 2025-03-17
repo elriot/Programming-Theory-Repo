@@ -4,9 +4,10 @@ using UnityEngine.InputSystem;
 
 public class BallController : MonoBehaviour
 {
-	public Rigidbody rb;
+	private Rigidbody rb;
 	public float moveSpeed = 3f;
 	public bool isDropped;
+	public int Point;
 	// private float lastInputTime = 0f;
 	// private float inputCooldown = 2f;
 	public string BallName { get; set; }

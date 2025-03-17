@@ -141,6 +141,7 @@ public class GameManager : MonoBehaviour
 		ballController.Drop();
 
 		Debug.Log($"use gravity after Drop(): {rb.useGravity}");
+		AddPoints(ballController.Point);
 	}
 
 	public int GetBallIndexByTag(string tag)
