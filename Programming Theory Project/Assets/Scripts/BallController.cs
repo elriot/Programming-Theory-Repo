@@ -11,6 +11,7 @@ public class BallController : MonoBehaviour
 	// private float lastInputTime = 0f;
 	// private float inputCooldown = 2f;
 	public string BallName { get; set; }
+	private GameManager gameManager;
 
 	void Awake()
 	{
@@ -19,6 +20,7 @@ public class BallController : MonoBehaviour
 	void Start()
 	{
 		rb.useGravity = isDropped;
+		gameManager = GameManager.Instance;
 	}
 
 	void Update()
@@ -41,24 +43,24 @@ public class BallController : MonoBehaviour
 		{
 			Debug.Log("Merge!");
 			Vector3 mergePosition = (transform.position + otherBall.transform.position) / 2;
-			int nextLevel = GameManager.Instance.GetBallIndexByTag(gameObject.tag) + 1;
+			int nextLevel = gameManager.GetBallIndexByTag(gameObject.tag) + 1;
 
-			GameManager.Instance.SpawnMergeBall(mergePosition, nextLevel);
+			gameManager.SpawnMergeBall(mergePosition, nextLevel);
 
 			// Debug.Log($"collision curr {gameObject.name}, collision obj {collision.gameObject.name} ");
 			Destroy(gameObject);
 			Destroy(otherBall.gameObject);
-			GameManager.Instance.BallMovementCompleted(this);
+			gameManager.BallMovementCompleted(this);
 		}
 		else if (collision.gameObject.CompareTag("Floor") || (otherBall != null && otherBall.isDropped && isDropped))
 		{
 			// Debug.Log("collised with ball or floor");
-			GameManager.Instance.BallMovementCompleted(this);
+			gameManager.BallMovementCompleted(this);
 		}
-		else
-		{
-			// Debug.Log("Nothing happened");
-		}
+		// else if(collision.gameObject.CompareTag("GameOverLine"))
+		// {
+		// 	Debug.LogWarning("GAME OVER!!!");
+		// }
 	}
 
 	public void Drop()
@@ -72,5 +74,13 @@ public class BallController : MonoBehaviour
 		}
 
 		rb.useGravity = true;
+	}
+	void OnTriggerEnter(Collider other)
+	{
+		Debug.Log($"OnTriggerEnter !! {other.gameObject.tag}, currentBall : {gameObject.tag}");
+		if(other.CompareTag("GameOverLine") && !gameManager.isCurrentBall(gameObject))
+		{
+			gameManager.GameOver();
+		}
 	}
 }
