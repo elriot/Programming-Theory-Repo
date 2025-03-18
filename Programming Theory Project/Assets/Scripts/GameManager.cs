@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 	private float inputCooldown = 2f;
 	public GameObject FocalPoint;
 	public bool isGameOver {get; private set;}
+	private MainManager mainManager;
 
 	private void Awake()
 	{
@@ -34,8 +35,10 @@ public class GameManager : MonoBehaviour
 	}
 	private void Start()
 	{
+		mainManager = MainManager.Instance;
 		ballPrefabsIndexRange = 1;
 		UpdateScoreText();
+		UpdateBestScoreText();
 		SpawnBall();
 	}
 
@@ -121,7 +124,7 @@ public class GameManager : MonoBehaviour
 
 	private void UpdateScoreText()
 	{
-		CurrentScoreText.text = $"Score : {TotalPoint}";
+		CurrentScoreText.text = $"Score : {TotalPoint} ({MainManager.Instance.PlayerName})";
 	}
 
 	public void BallMovementCompleted(BallController ball)
@@ -180,10 +183,21 @@ public class GameManager : MonoBehaviour
 		SoundManager.Instance.PlayGameOverSound();
 		isGameOver = true;
 		GameOverScreen.SetActive(true);
+		if(TotalPoint >= mainManager.bestScorePlayer.score || mainManager.bestScorePlayer.IsNullOrEmpty())
+		{
+			Debug.Log("here!");
+			mainManager.bestScorePlayer.ReplaceBestScorePlayer(mainManager.PlayerName, TotalPoint);
+		}
 	}
 
 	public bool isCurrentBall(GameObject ball)
 	{
 		return ball.GetComponent<BallController>().GetInstanceID() == currentBall.GetInstanceID();
+	}
+
+	private void UpdateBestScoreText()
+	{
+		BestScoreText.text = "Best Score : ";
+		BestScoreText.text += mainManager.bestScorePlayer.IsNullOrEmpty() ? "N/A" : $"{mainManager.bestScorePlayer.score} ({mainManager.bestScorePlayer.name})";
 	}
 }
