@@ -10,9 +10,6 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private int ballPrefabsIndexRange;
 	public int TotalPoint;
 	public Vector3 SpawnPos;
-	public TMP_Text CurrentScoreText;
-	public TMP_Text BestScoreText;
-	public GameObject GameOverScreen;
 	private BallController currentBall;
 	private int BallPrefabsLength => BallPrefabs.Length;
 	// private int idx = 0;
@@ -21,6 +18,7 @@ public class GameManager : MonoBehaviour
 	public GameObject FocalPoint;
 	public bool isGameOver { get; private set; }
 	private MainManager mainManager;
+	private GameUIHandler gameUIHander;
 
 	private void Awake()
 	{
@@ -36,9 +34,11 @@ public class GameManager : MonoBehaviour
 	private void Start()
 	{
 		mainManager = MainManager.Instance;
+		gameUIHander = GameUIHandler.Instance;
+
 		ballPrefabsIndexRange = 1;
 		UpdateScoreText();
-		UpdateBestScoreText();
+		// UpdateBestScoreText();
 		SpawnBall();
 	}
 
@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
 
 	private void UpdateScoreText()
 	{
-		CurrentScoreText.text = $"Score : {TotalPoint} ({MainManager.Instance?.PlayerName ?? ""})";
+		gameUIHander.UpdateCurrentScore(TotalPoint);
 	}
 
 	public void BallMovementCompleted(BallController ball)
@@ -188,7 +188,7 @@ public class GameManager : MonoBehaviour
 		//Debug.Log("GAME OVER!!!!!!!");
 		SoundManager.Instance.PlayGameOverSound();
 		isGameOver = true;
-		GameOverScreen.SetActive(true);
+		gameUIHander.ShowGameOverScreen();
 		if (TotalPoint >= mainManager.bestScorePlayer.score || mainManager.bestScorePlayer.IsNullOrEmpty())
 		{
 			//Debug.Log("here!");
@@ -199,20 +199,6 @@ public class GameManager : MonoBehaviour
 	public bool isCurrentBall(GameObject ball)
 	{
 		return ball.GetComponent<BallController>().GetInstanceID() == currentBall.GetInstanceID();
-	}
-
-	private void UpdateBestScoreText()
-	{
-		// Debug.Log("bestscore player : " + mainManager);
-		BestScoreText.text = "Best Score : ";
-		if (mainManager.bestScorePlayer != null)
-		{
-			BestScoreText.text += mainManager.bestScorePlayer.IsNullOrEmpty() ? "No Record" : mainManager.bestScorePlayer.score;
-		}
-		else
-		{
-			BestScoreText.text += "No Record";
-		}
 	}
 
 	private int GetRandomBallLevel()
