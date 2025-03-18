@@ -79,6 +79,16 @@ public class MainManager : MonoBehaviour
         SceneManager.LoadScene(gameSceneName);
     }
 
+	public float GetSFXVolume()
+	{
+		return SFXVolumeSlider.value;
+	}
+
+	public float GetBGMVolume()
+	{
+		return BGMVolumeSlider.value;
+	}
+
 	public class BestScorePlayer
 	{
 		public int score {get; private set;}

@@ -12,35 +12,40 @@ public class SoundManager : MonoBehaviour
 	public AudioClip BackgroundMusic;
 	public float SFXVolume;
 	public float BGMVolume;
+	public MainManager mainManager;
 
 	void Awake()
 	{
 		if(Instance == null)
 		{
 			Instance = this;
+			DontDestroyOnLoad(gameObject);
 		}
 		else if (Instance != this)
 		{
 			Destroy(gameObject);
 		}
 
-		        
-        musicSource = gameObject.AddComponent<AudioSource>();
-        musicSource.loop = true; // 반복 재생
-        musicSource.playOnAwake = false;
-        musicSource.volume = BGMVolume; // 기본 볼륨 설정
 
-        // 효과음용 AudioSource 생성
-        sfxSource = gameObject.AddComponent<AudioSource>();
-        sfxSource.playOnAwake = false;
 	}
     private void Start()
-    {
-        // 게임 시작과 함께 배경음악 재생
+	{
+		mainManager = MainManager.Instance;
+		SFXVolume = mainManager.GetSFXVolume();
+		BGMVolume = mainManager.GetBGMVolume() * 0.3f;
+
+		//bgm audio source 
+        musicSource = gameObject.AddComponent<AudioSource>();
+        musicSource.loop = true; 
+        musicSource.playOnAwake = false;
+        musicSource.volume = BGMVolume; 
+
+		//sfx audio source
+        sfxSource = gameObject.AddComponent<AudioSource>();
+        sfxSource.playOnAwake = false;
         PlayBackgroundMusic();
     }
 
-    // 배경음악 재생
     public void PlayBackgroundMusic()
     {
         if (BackgroundMusic != null)
@@ -56,25 +61,25 @@ public class SoundManager : MonoBehaviour
 
 	public void PlayDropSound()
     {
-        PlaySFXSound(DropBallSound, SFXVolume);
+        PlaySFXSound(DropBallSound);
     }
 
     public void PlayMergeSound()
     {
-        PlaySFXSound(MergeBallSound, SFXVolume);
+        PlaySFXSound(MergeBallSound);
     }
 
 	public void PlayGameOverSound()
 	{
-		PlaySFXSound(GameOverSound, SFXVolume);
+		PlaySFXSound(GameOverSound);
 	}
 
 
-    private void PlaySFXSound(AudioClip clip, float volume)
+    private void PlaySFXSound(AudioClip clip)
     {
         if (clip != null)
         {
-            sfxSource.PlayOneShot(clip, volume);
+            sfxSource.PlayOneShot(clip, SFXVolume);
         }
         else
         {
