@@ -10,9 +10,6 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private int ballPrefabsIndexRange;
 	public int TotalPoint;
 	public Vector3 SpawnPos;
-	public TMP_Text CurrentScoreText;
-	public TMP_Text BestScoreText;
-	public GameObject GameOverScreen;
 	private BallController currentBall;
 	private int BallPrefabsLength => BallPrefabs.Length;
 	// private int idx = 0;
@@ -21,6 +18,7 @@ public class GameManager : MonoBehaviour
 	public GameObject FocalPoint;
 	public bool isGameOver { get; private set; }
 	private MainManager mainManager;
+	private GameUIHandler gameUIHander;
 
 	private void Awake()
 	{
@@ -36,9 +34,11 @@ public class GameManager : MonoBehaviour
 	private void Start()
 	{
 		mainManager = MainManager.Instance;
+		gameUIHander = GameUIHandler.Instance;
+
 		ballPrefabsIndexRange = 1;
 		UpdateScoreText();
-		UpdateBestScoreText();
+		// UpdateBestScoreText();
 		SpawnBall();
 	}
 
@@ -94,24 +94,24 @@ public class GameManager : MonoBehaviour
 
 	public void SpawnBall()
 	{
-		Debug.Log("Spawn Ball");
+		//Debug.Log("Spawn Ball");
 		if (ballPrefabsIndexRange < 0)
 		{
-			Debug.LogError("Ball Prefabs Index Range is zero or negative.");
+			//Debug.LogError("Ball Prefabs Index Range is zero or negative.");
 			return;
 		}
 
 		int idx = GetRandomBallLevel();
 		if (idx >= ballPrefabsIndexRange)
 		{
-			Debug.LogError($"Out of Range - Ball Index : {idx}");
+			//Debug.LogError($"Out of Range - Ball Index : {idx}");
 			return;
 		}
 
 		GameObject ballObj = Instantiate(BallPrefabs[idx], SpawnPos, Quaternion.identity);
 		currentBall = ballObj.GetComponent<BallController>();
 		currentBall.BallName = "ball_" + idx;
-		Debug.Log($"Spawn Ball Index : {idx}, name : {currentBall.BallName}");
+		//Debug.Log($"Spawn Ball Index : {idx}, name : {currentBall.BallName}");
 		idx++;
 	}
 
@@ -124,14 +124,14 @@ public class GameManager : MonoBehaviour
 
 	private void UpdateScoreText()
 	{
-		CurrentScoreText.text = $"Score : {TotalPoint} ({MainManager.Instance?.PlayerName ?? ""})";
+		gameUIHander.UpdateCurrentScore(TotalPoint);
 	}
 
 	public void BallMovementCompleted(BallController ball)
 	{
 		if (currentBall == ball)
 		{
-			Debug.Log($"Ball Movement Completed: {ball.BallName}");
+			//Debug.Log($"Ball Movement Completed: {ball.BallName}");
 			currentBall = null;
 		}
 	}
@@ -142,13 +142,13 @@ public class GameManager : MonoBehaviour
 
 		if (level < 0 || level >= BallPrefabs.Length)
 		{
-			Debug.LogError("Invalid level for spawning merge ball.");
+			//Debug.LogError("Invalid level for spawning merge ball.");
 			return;
 		}
 
 		if (level >= ballPrefabsIndexRange+1)
 		{
-			Debug.Log("spawn ball Range up");
+			//Debug.Log("spawn ball Range up");
 			ballPrefabsIndexRange++;
 		}
 
@@ -159,7 +159,7 @@ public class GameManager : MonoBehaviour
 
 		if (rb == null)
 		{
-			Debug.LogError("Rigidbody is missing from the merged ball prefab!");
+			//Debug.LogError("Rigidbody is missing from the merged ball prefab!");
 			return;
 		}
 
@@ -175,7 +175,7 @@ public class GameManager : MonoBehaviour
 	{
 		if (string.IsNullOrEmpty(tag) || !tag.Contains("_"))
 		{
-			Debug.LogError($"Invalid tag format: {tag}");
+			//Debug.LogError($"Invalid tag format: {tag}");
 			return -1;
 		}
 
@@ -185,13 +185,13 @@ public class GameManager : MonoBehaviour
 
 	public void GameOver()
 	{
-		Debug.Log("GAME OVER!!!!!!!");
+		//Debug.Log("GAME OVER!!!!!!!");
 		SoundManager.Instance.PlayGameOverSound();
 		isGameOver = true;
-		GameOverScreen.SetActive(true);
+		gameUIHander.ShowGameOverScreen();
 		if (TotalPoint >= mainManager.bestScorePlayer.score || mainManager.bestScorePlayer.IsNullOrEmpty())
 		{
-			Debug.Log("here!");
+			//Debug.Log("here!");
 			mainManager.bestScorePlayer.ReplaceBestScorePlayer(mainManager.PlayerName, TotalPoint);
 		}
 	}
@@ -199,20 +199,6 @@ public class GameManager : MonoBehaviour
 	public bool isCurrentBall(GameObject ball)
 	{
 		return ball.GetComponent<BallController>().GetInstanceID() == currentBall.GetInstanceID();
-	}
-
-	private void UpdateBestScoreText()
-	{
-		// Debug.Log("bestscore player : " + mainManager);
-		BestScoreText.text = "Best Score : ";
-		if (mainManager.bestScorePlayer != null)
-		{
-			BestScoreText.text += mainManager.bestScorePlayer.IsNullOrEmpty() ? "No Record" : mainManager.bestScorePlayer.score;
-		}
-		else
-		{
-			BestScoreText.text += "No Record";
-		}
 	}
 
 	private int GetRandomBallLevel()
