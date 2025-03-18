@@ -50,7 +50,7 @@ public class MainManager : MonoBehaviour
 	{
 		if((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)) && SceneManager.Equals(SceneManager.GetActiveScene(), SceneManager.GetSceneByName(mainSceneName)))
 		{
-			Debug.Log("same scene");
+			//Debug.Log("same scene");
 			OnStartGame();
 		}
 	}
