@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
 
 	private void UpdateScoreText()
 	{
-		CurrentScoreText.text = $"Score : {TotalPoint} ({MainManager.Instance.PlayerName})";
+		CurrentScoreText.text = $"Score : {TotalPoint} ({MainManager.Instance?.PlayerName??""})";
 	}
 
 	public void BallMovementCompleted(BallController ball)
@@ -197,7 +197,15 @@ public class GameManager : MonoBehaviour
 
 	private void UpdateBestScoreText()
 	{
+		Debug.Log("bestscore player : " + mainManager);
 		BestScoreText.text = "Best Score : ";
-		BestScoreText.text += mainManager.bestScorePlayer.IsNullOrEmpty() ? "N/A" : $"{mainManager.bestScorePlayer.score} ({mainManager.bestScorePlayer.name})";
+		if(mainManager.bestScorePlayer != null)
+		{
+			BestScoreText.text += mainManager.bestScorePlayer.IsNullOrEmpty() ? "No Record" : mainManager.bestScorePlayer.score;
+		}
+		else 
+		{
+			BestScoreText.text += "No Record";
+		}
 	}
 }
