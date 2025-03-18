@@ -396,9 +396,9 @@ RectTransform:
   - {fileID: 1591297450}
   m_Father: {fileID: 1476263623}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -913, y: 324}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 98, y: -85}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &105529860
@@ -1316,7 +1316,7 @@ MonoBehaviour:
   GameOverSound: {fileID: 8300000, guid: 774ebc5c074ce4695b7cc310fbd44087, type: 3}
   BackgroundMusic: {fileID: 8300000, guid: 883634e1c7cb04070aecb71779ed7e1d, type: 3}
   SFXVolume: 1
-  BGMVolume: 0.3
+  BGMVolume: 0.1
 --- !u!1 &1581285641
 GameObject:
   m_ObjectHideFlags: 0

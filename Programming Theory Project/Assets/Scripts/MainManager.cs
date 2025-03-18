@@ -10,6 +10,7 @@ public class MainManager : MonoBehaviour
 	public Slider SFXVolumeSlider;
 	public Slider BGMVolumeSlider;
 	private string gameSceneName = "Game";
+	private string mainSceneName = "Main";
 	public static MainManager Instance;
 	public string PlayerName;
 	public BestScorePlayer bestScorePlayer;
@@ -45,7 +46,16 @@ public class MainManager : MonoBehaviour
         // }
     }
 
-    public void OnSFXVolumeChanged()
+	void Update()
+	{
+		if((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)) && SceneManager.Equals(SceneManager.GetActiveScene(), SceneManager.GetSceneByName(mainSceneName)))
+		{
+			Debug.Log("same scene");
+			OnStartGame();
+		}
+	}
+
+	public void OnSFXVolumeChanged()
     {
         // float volume = SFXVolumeSlider.value;
 		// Debug.Log($"chang sfx {volume}");

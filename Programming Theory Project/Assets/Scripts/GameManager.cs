@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 	private float lastInputTime = 0f;
 	private float inputCooldown = 2f;
 	public GameObject FocalPoint;
-	public bool isGameOver {get; private set;}
+	public bool isGameOver { get; private set; }
 	private MainManager mainManager;
 
 	private void Awake()
@@ -44,9 +44,9 @@ public class GameManager : MonoBehaviour
 
 	private void Update()
 	{
-		if(isGameOver)
+		if (isGameOver)
 		{
-			if(Input.GetKeyDown(KeyCode.Space))
+			if (Input.GetKeyDown(KeyCode.Space))
 			{
 				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 			}
@@ -68,8 +68,8 @@ public class GameManager : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if(isGameOver) return;
-		
+		if (isGameOver) return;
+
 		if (currentBall != null)
 			MoveCurrentBall();
 	}
@@ -82,10 +82,10 @@ public class GameManager : MonoBehaviour
 		float verticalInput = Input.GetAxis("Arrow Vertical");
 
 		Transform focalPointTransnform = FocalPoint.transform;
-        Vector3 moveDirection = (focalPointTransnform.forward * verticalInput + focalPointTransnform.right * horizontalInput).normalized;
+		Vector3 moveDirection = (focalPointTransnform.forward * verticalInput + focalPointTransnform.right * horizontalInput).normalized;
 
 		Rigidbody rb = currentBall.GetComponent<Rigidbody>();
-        rb.MovePosition(rb.position + moveDirection * currentBall.moveSpeed * Time.fixedDeltaTime);
+		rb.MovePosition(rb.position + moveDirection * currentBall.moveSpeed * Time.fixedDeltaTime);
 		// Vector3 movement = new Vector3(horizontalInput, 0, verticalInput).normalized;
 		// Rigidbody rb = currentBall.GetComponent<Rigidbody>();
 		// rb.MovePosition(rb.position + movement * currentBall.moveSpeed * Time.fixedDeltaTime);
@@ -94,14 +94,14 @@ public class GameManager : MonoBehaviour
 
 	public void SpawnBall()
 	{
-		// Debug.Log("Spawn Ball");
+		Debug.Log("Spawn Ball");
 		if (ballPrefabsIndexRange < 0)
 		{
 			Debug.LogError("Ball Prefabs Index Range is zero or negative.");
 			return;
 		}
 
-		int idx = UnityEngine.Random.Range(0, ballPrefabsIndexRange);
+		int idx = GetRandomBallLevel();
 		if (idx >= ballPrefabsIndexRange)
 		{
 			Debug.LogError($"Out of Range - Ball Index : {idx}");
@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
 
 	private void UpdateScoreText()
 	{
-		CurrentScoreText.text = $"Score : {TotalPoint} ({MainManager.Instance.PlayerName})";
+		CurrentScoreText.text = $"Score : {TotalPoint} ({MainManager.Instance?.PlayerName ?? ""})";
 	}
 
 	public void BallMovementCompleted(BallController ball)
@@ -138,12 +138,18 @@ public class GameManager : MonoBehaviour
 
 	public void SpawnMergeBall(Vector3 position, int level)
 	{
-		Debug.Log($"Spawn Merge Ball : {level}");
+		// Debug.Log($"Spawn Merge Ball : {level}");
 
 		if (level < 0 || level >= BallPrefabs.Length)
 		{
 			Debug.LogError("Invalid level for spawning merge ball.");
 			return;
+		}
+
+		if (level >= ballPrefabsIndexRange+1)
+		{
+			Debug.Log("spawn ball Range up");
+			ballPrefabsIndexRange++;
 		}
 
 		GameObject newBall = Instantiate(BallPrefabs[level], position, Quaternion.identity);
@@ -160,7 +166,7 @@ public class GameManager : MonoBehaviour
 		ballController.isDropped = true;
 		ballController.Drop();
 
-		Debug.Log($"use gravity after Drop(): {rb.useGravity}");
+		// Debug.Log($"use gravity after Drop(): {rb.useGravity}");
 		AddPoints(ballController.Point);
 		SoundManager.Instance.PlayMergeSound();
 	}
@@ -183,7 +189,7 @@ public class GameManager : MonoBehaviour
 		SoundManager.Instance.PlayGameOverSound();
 		isGameOver = true;
 		GameOverScreen.SetActive(true);
-		if(TotalPoint >= mainManager.bestScorePlayer.score || mainManager.bestScorePlayer.IsNullOrEmpty())
+		if (TotalPoint >= mainManager.bestScorePlayer.score || mainManager.bestScorePlayer.IsNullOrEmpty())
 		{
 			Debug.Log("here!");
 			mainManager.bestScorePlayer.ReplaceBestScorePlayer(mainManager.PlayerName, TotalPoint);
@@ -197,7 +203,45 @@ public class GameManager : MonoBehaviour
 
 	private void UpdateBestScoreText()
 	{
+		// Debug.Log("bestscore player : " + mainManager);
 		BestScoreText.text = "Best Score : ";
-		BestScoreText.text += mainManager.bestScorePlayer.IsNullOrEmpty() ? "N/A" : $"{mainManager.bestScorePlayer.score} ({mainManager.bestScorePlayer.name})";
+		if (mainManager.bestScorePlayer != null)
+		{
+			BestScoreText.text += mainManager.bestScorePlayer.IsNullOrEmpty() ? "No Record" : mainManager.bestScorePlayer.score;
+		}
+		else
+		{
+			BestScoreText.text += "No Record";
+		}
+	}
+
+	private int GetRandomBallLevel()
+	{
+		float[] weights = { 50, 30, 15, 5, 1, 0.5f };
+		float totalWeight = 0;
+
+		for (int i = 0; i < ballPrefabsIndexRange; i++)
+		{
+			totalWeight += weights[i];
+		}
+
+		float randomValue = UnityEngine.Random.Range(0, totalWeight);
+		float cumulativeWeight = 0;
+
+		for (int i = 0; i < ballPrefabsIndexRange; i++)
+		{
+			cumulativeWeight += weights[i];
+			if (randomValue < cumulativeWeight)
+			{
+				return i;
+			}
+		}
+
+		return 0;
+	}
+
+	public int GetLastLevel()
+	{
+		return BallPrefabsLength;
 	}
 }

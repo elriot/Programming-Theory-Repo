@@ -45,12 +45,15 @@ public class BallController : MonoBehaviour
 			Vector3 mergePosition = (transform.position + otherBall.transform.position) / 2;
 			int nextLevel = gameManager.GetBallIndexByTag(gameObject.tag) + 1;
 
-			gameManager.SpawnMergeBall(mergePosition, nextLevel);
+			if(nextLevel < GameManager.Instance.GetLastLevel())
+			{
+				gameManager.SpawnMergeBall(mergePosition, nextLevel);
 
-			// Debug.Log($"collision curr {gameObject.name}, collision obj {collision.gameObject.name} ");
-			Destroy(gameObject);
-			Destroy(otherBall.gameObject);
-			gameManager.BallMovementCompleted(this);
+				// Debug.Log($"collision curr {gameObject.name}, collision obj {collision.gameObject.name} ");
+				Destroy(gameObject);
+				Destroy(otherBall.gameObject);
+				gameManager.BallMovementCompleted(this);
+			}
 		}
 		else if (collision.gameObject.CompareTag("Floor") || (otherBall != null && otherBall.isDropped && isDropped))
 		{
