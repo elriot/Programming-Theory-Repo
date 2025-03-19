@@ -12,7 +12,6 @@ public class SoundManager : MonoBehaviour
 	public AudioClip BackgroundMusic;
 	public float SFXVolume;
 	public float BGMVolume;
-	public MainManager mainManager;
 
 	void Awake()
 	{
@@ -25,14 +24,12 @@ public class SoundManager : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
-
-
 	}
+
     private void Start()
 	{
-		mainManager = MainManager.Instance;
-		SFXVolume = mainManager.GetSFXVolume();
-		BGMVolume = mainManager.GetBGMVolume() * 0.3f;
+		SFXVolume = GetSFXVolume();
+		BGMVolume = GetBGMVolume() * 0.3f;
 
 		//bgm audio source 
         musicSource = gameObject.AddComponent<AudioSource>();
@@ -86,4 +83,24 @@ public class SoundManager : MonoBehaviour
             Debug.LogWarning("Attempted to play a null audio clip.");
         }
     }
+	
+	private float GetBGMVolume()
+	{
+		return PlayerPrefs.HasKey("BGMVolume") ? PlayerPrefs.GetFloat("BGMVolume") : 0.5f;
+	}
+
+	private float GetSFXVolume()
+	{
+		return PlayerPrefs.HasKey("SFXVolume") ? PlayerPrefs.GetFloat("SFXVolume") : 0.5f;
+	}
+
+	public void SetBGMVolume(float volume)
+	{
+		musicSource.volume = volume;
+	}
+
+	public void SetSFXVolume(float volume)
+	{
+		sfxSource.volume= volume;
+	}
 }

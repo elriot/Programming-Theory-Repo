@@ -1036,10 +1036,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57caf6f95b124f8c9a5c7e05e027ea5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerNameInput: {fileID: 2147447524}
-  SFXVolumeSlider: {fileID: 1633426602}
-  BGMVolumeSlider: {fileID: 1025946826}
-  PlayerName: 
 --- !u!1 &794511064
 GameObject:
   m_ObjectHideFlags: 0
@@ -1838,6 +1834,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: -8, y: -5, z: -8, w: -5}
   m_Softness: {x: 0, y: 0}
+--- !u!1 &1432048144
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1432048145}
+  - component: {fileID: 1432048146}
+  m_Layer: 0
+  m_Name: MainUIHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1432048145
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432048144}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.38284692, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1432048146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432048144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 934fb0d76da394d4395388690d4a830d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerNameInput: {fileID: 2147447524}
+  BGMVolumeSlider: {fileID: 1025946826}
+  SFXVolumeSlider: {fileID: 1633426602}
+  StartButton: {fileID: 10860883}
 --- !u!1 &1633426600
 GameObject:
   m_ObjectHideFlags: 0
@@ -2643,7 +2687,7 @@ GameObject:
   - component: {fileID: 2147447525}
   - component: {fileID: 2147447524}
   m_Layer: 5
-  m_Name: TextInput
+  m_Name: PlayerNameInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2817,3 +2861,4 @@ SceneRoots:
   - {fileID: 50092006}
   - {fileID: 120999221}
   - {fileID: 636139206}
+  - {fileID: 1432048145}

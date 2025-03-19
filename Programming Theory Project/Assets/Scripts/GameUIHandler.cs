@@ -31,7 +31,8 @@ public class GameUIHandler : MonoBehaviour
 	public void UpdateCurrentScore(int score)
 	{
 		CurrentScoreText.text =$"Score : {score} ";
-		CurrentScoreText.text += mainManager.PlayerName != "" ? $"({mainManager.PlayerName.Trim()})" : "";
+		string playerName = MainUIHandler.Instance.GetPlayerName();
+		CurrentScoreText.text += playerName != "" ? $"({playerName.Trim()})" : "";
 	}
 
 	public void ShowGameOverScreen()
