@@ -11,6 +11,8 @@ public class GameUIHandler : MonoBehaviour
 	public static GameUIHandler Instance;
 	private MainManager mainManager;
 
+	public string PlayerName {get; private set; }
+
 	void Awake()
 	{
         if (Instance == null)
@@ -25,13 +27,14 @@ public class GameUIHandler : MonoBehaviour
 	void Start()
 	{
 		mainManager = MainManager.Instance;
+		PlayerName = PlayerPrefs.GetString("PlayerName").Trim();
 		UpdateBestScoreText();
 	}
 
 	public void UpdateCurrentScore(int score)
 	{
 		CurrentScoreText.text =$"Score : {score} ";
-		CurrentScoreText.text += mainManager.PlayerName != "" ? $"({mainManager.PlayerName.Trim()})" : "";
+		CurrentScoreText.text += $"({PlayerName ?? ""})";
 	}
 
 	public void ShowGameOverScreen()

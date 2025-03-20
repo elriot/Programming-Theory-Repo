@@ -6,16 +6,19 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class MainManager : MonoBehaviour
 {
-	public TMP_InputField PlayerNameInput;
-	public Slider SFXVolumeSlider;
-	public Slider BGMVolumeSlider;
+	
 	private string gameSceneName = "Game";
 	private string mainSceneName = "Main";
 	public static MainManager Instance;
-	public string PlayerName;
 	public BestScorePlayer bestScorePlayer;
+
     private void Awake()
     {
+		if (SceneManager.GetActiveScene().name != mainSceneName)
+		{
+			Destroy(gameObject);
+		}
+
         if (Instance == null)
         {
             Instance = this;
@@ -28,66 +31,29 @@ public class MainManager : MonoBehaviour
     }
 	private void Start()
     {
-		Debug.Log("main manager start");
 		if(bestScorePlayer == null)
 		{
 			bestScorePlayer = new BestScorePlayer();
 		}
-        // if (PlayerPrefs.HasKey("BGMVolume"))
-        // {
-        //     float savedVolume = PlayerPrefs.GetFloat("BGMVolume");
-        //     BGMVolumeSlider.value = savedVolume;
-        // }
-
-        // if (PlayerPrefs.HasKey("SFXVolumeSlider"))
-        // {
-        //     float savedVolume = PlayerPrefs.GetFloat("SFXVolume");
-        //     SFXVolumeSlider.value = savedVolume;
-        // }
     }
 
 	void Update()
 	{
-		if((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)) && SceneManager.Equals(SceneManager.GetActiveScene(), SceneManager.GetSceneByName(mainSceneName)))
-		{
-			//Debug.Log("same scene");
-			OnStartGame();
-		}
+        if (SceneManager.GetActiveScene().name != "Main")
+        {
+            return;
+        }
+			
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+        {
+            OnStartGame();
+        }
 	}
-
-	public void OnSFXVolumeChanged()
-    {
-        // float volume = SFXVolumeSlider.value;
-		// Debug.Log($"chang sfx {volume}");
-        // SoundManager.Instance.SetMusicVolume(volume);
-        // PlayerPrefs.SetFloat("SFXVolume", volume);
-    }
-
-	public void OnBGMVolumeSlider()
-    {
-        // float volume = BGMVolumeSlider.value;
-        // // SoundManager.Instance.SetMusicVolume(volume);
-		// Debug.Log($"chang bgm {volume}");
-        // PlayerPrefs.SetFloat("BGMVolume", volume);
-    }
 
     public void OnStartGame()
     {
-        // string playerName = PlayerNameInput.text;
-        // PlayerPrefs.SetString("PlayerName", playerName);
-		PlayerName = PlayerNameInput.text;
         SceneManager.LoadScene(gameSceneName);
     }
-
-	public float GetSFXVolume()
-	{
-		return SFXVolumeSlider.value;
-	}
-
-	public float GetBGMVolume()
-	{
-		return BGMVolumeSlider.value;
-	}
 
 	public class BestScorePlayer
 	{

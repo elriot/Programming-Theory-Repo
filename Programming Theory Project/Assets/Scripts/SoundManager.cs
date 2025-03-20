@@ -10,9 +10,10 @@ public class SoundManager : MonoBehaviour
 	public AudioClip MergeBallSound;
 	public AudioClip GameOverSound;
 	public AudioClip BackgroundMusic;
-	public float SFXVolume;
-	public float BGMVolume;
-	public MainManager mainManager;
+
+	private float SFXVolumeNormalizer;
+	// public float SFXVolume;
+	// public float BGMVolume;
 
 	void Awake()
 	{
@@ -25,29 +26,29 @@ public class SoundManager : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
-
-
 	}
+
     private void Start()
 	{
-		mainManager = MainManager.Instance;
-		SFXVolume = mainManager.GetSFXVolume();
-		BGMVolume = mainManager.GetBGMVolume() * 0.3f;
+		SFXVolumeNormalizer = 3f;
 
 		//bgm audio source 
         musicSource = gameObject.AddComponent<AudioSource>();
         musicSource.loop = true; 
         musicSource.playOnAwake = false;
-        musicSource.volume = BGMVolume; 
+        musicSource.volume = GetBGMVolume(); 
 
 		//sfx audio source
         sfxSource = gameObject.AddComponent<AudioSource>();
         sfxSource.playOnAwake = false;
+		sfxSource.volume = GetSFXVolume();
+
         PlayBackgroundMusic();
     }
 
     public void PlayBackgroundMusic()
     {
+		// Debug.Log("PlayBackgroundMusic");
         if (BackgroundMusic != null)
         {
             musicSource.clip = BackgroundMusic;
@@ -77,13 +78,43 @@ public class SoundManager : MonoBehaviour
 
     private void PlaySFXSound(AudioClip clip)
     {
+		// Debug.Log($"Player Sound {clip.name} {GetSFXVolume()}");
         if (clip != null)
         {
-            sfxSource.PlayOneShot(clip, SFXVolume);
+            sfxSource.PlayOneShot(clip, GetSFXVolume() * SFXVolumeNormalizer);
         }
         else
         {
             Debug.LogWarning("Attempted to play a null audio clip.");
         }
     }
+	
+	public float GetBGMVolume()
+	{
+		return PlayerPrefs.HasKey("BGMVolume") ? PlayerPrefs.GetFloat("BGMVolume") : 0.5f;
+	}
+
+	public float GetSFXVolume()
+	{
+		return PlayerPrefs.HasKey("SFXVolume") ? PlayerPrefs.GetFloat("SFXVolume") : 0.5f;
+	}
+
+	public void SetBGMVolume(float volume)
+	{
+		PlayerPrefs.SetFloat("BGMVolume", volume);
+		if(musicSource != null)
+			musicSource.volume = volume;
+	}
+
+	public void SetSFXVolume(float volume)
+	{
+		// Debug.Log($"SM : SetSFXVolume {volume}");
+		PlayerPrefs.SetFloat("SFXVolume", volume);
+
+		if(sfxSource != null)
+		{
+			sfxSource.volume= volume;
+			PlayDropSound();
+		}
+	}
 }

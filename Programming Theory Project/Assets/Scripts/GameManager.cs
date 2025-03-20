@@ -13,8 +13,8 @@ public class GameManager : MonoBehaviour
 	private BallController currentBall;
 	private int BallPrefabsLength => BallPrefabs.Length;
 	// private int idx = 0;
-	private float lastInputTime = 0f;
-	private float inputCooldown = 2f;
+	// private float lastInputTime = 0f;
+	// private float inputCooldown = 2f;
 	public GameObject FocalPoint;
 	public bool isGameOver { get; private set; }
 	private MainManager mainManager;
@@ -44,15 +44,25 @@ public class GameManager : MonoBehaviour
 
 	private void Update()
 	{
+		if(SceneManager.GetActiveScene().name != "Game")
+			return;
+
 		if (isGameOver)
 		{
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+				SceneManager.LoadScene(1);
+				return;
 			}
 		}
 		else
 		{
+			if(Input.GetKeyDown(KeyCode.Escape))
+			{
+				SceneManager.LoadScene(0);
+				return;
+			}
+
 			if (currentBall == null)
 				SpawnBall();
 
@@ -192,7 +202,7 @@ public class GameManager : MonoBehaviour
 		if (TotalPoint >= mainManager.bestScorePlayer.score || mainManager.bestScorePlayer.IsNullOrEmpty())
 		{
 			//Debug.Log("here!");
-			mainManager.bestScorePlayer.ReplaceBestScorePlayer(mainManager.PlayerName, TotalPoint);
+			mainManager.bestScorePlayer.ReplaceBestScorePlayer(GameUIHandler.Instance.PlayerName, TotalPoint);
 		}
 	}
 
