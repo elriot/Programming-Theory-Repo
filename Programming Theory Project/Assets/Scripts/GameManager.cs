@@ -57,6 +57,12 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
+			if(Input.GetKeyDown(KeyCode.Escape))
+			{
+				SceneManager.LoadScene(0);
+				return;
+			}
+
 			if (currentBall == null)
 				SpawnBall();
 
