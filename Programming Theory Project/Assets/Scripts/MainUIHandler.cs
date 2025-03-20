@@ -25,52 +25,87 @@ public class MainUIHandler : MonoBehaviour
 	}
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-		FindUIElements();
+		if(SceneManager.GetActiveScene().name == "Main")
+			FindUIElements();
 	}
 
 	private void Start()
 	{
-		Debug.Log("UImanager Start");
+		// Debug.Log("UImanager Start");
 	}
 
 	private void FindUIElements()
 	{
+		// Debug.Log("FindUIElements");
 		BGMVolumeSlider = GameObject.Find("BGMVolumeSlider")?.GetComponent<Slider>();
 		SFXVolumeSlider = GameObject.Find("SFXVolumeSlider")?.GetComponent<Slider>();
 		PlayerNameInput = GameObject.Find("PlayerNameInput")?.GetComponent<TMP_InputField>();
 		StartButton = GameObject.Find("StartButton")?.GetComponent<Button>();
 
-		Debug.Log($"FindUIElements, is bgmVolumeSlider null? {BGMVolumeSlider}");
+		// Debug.Log($"FindUIElements, is bgmVolumeSlider null? {BGMVolumeSlider}");
 
 		if (BGMVolumeSlider != null)
-			BGMVolumeSlider.onValueChanged.AddListener(SetBGMVolume);
-		
+		{
+			BGMVolumeSlider.onValueChanged.AddListener(OnChangeBGMVolume);
+			SetBGMVolumeSliderValue();
+		}
+
+
 		if (SFXVolumeSlider != null)
-			SFXVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
-		
-		if(StartButton != null)
+		{
+			SFXVolumeSlider.onValueChanged.AddListener(OnChangeSFXVolume);
+			SetSFXVolumeSliderValue();
+		}
+
+
+		if (StartButton != null)
 			StartButton.onClick.AddListener(ClickStartButton);
+
+		if(PlayerNameInput != null)
+		{
+			// PlayerNameInput.onValueChanged.AddListener(OnChangePlayerName);
+			SetPlayerNameValue();
+		}
 	}
 
-	public void SetBGMVolume(float volume)
+	private void SetSFXVolumeSliderValue()
 	{
-		Debug.Log($"UIManager SetBGMVolume! {volume}");
+		SFXVolumeSlider.value = SoundManager.Instance.GetSFXVolume();
+	}
+
+	private void SetBGMVolumeSliderValue()
+	{
+		BGMVolumeSlider.value = SoundManager.Instance.GetBGMVolume();
+	}
+
+	public void OnChangeBGMVolume(float volume = 0.5f)
+	{
+		
 		SoundManager.Instance.SetBGMVolume(volume);
+		// Debug.Log($"Set bgm change {volume}");
+		
 	}
 
-	public void SetSFXVolume(float volume)
+	public void OnChangeSFXVolume(float volume = 0.5f)
 	{
-		Debug.Log($"UIManager SetSFXVolume! {volume}");
-		SoundManager.Instance.SetSFXVolume(volume);
+		SoundManager.Instance.SetSFXVolume(volume);	
 	}
 
-	public string GetPlayerName()
+	// public void OnChangePlayerName(string name)
+	// {
+	// 	PlayerPrefs.SetString("PlayerName", name);	
+	// }
+
+	private void SetPlayerNameValue()
 	{
-		return PlayerNameInput.text;
+		PlayerNameInput.text = PlayerPrefs.GetString("PlayerName");
 	}
+
+	
 
 	public void ClickStartButton()
 	{
+		PlayerPrefs.SetString("PlayerName", PlayerNameInput.text);
 		MainManager.Instance.OnStartGame();
 	}
 }

@@ -44,14 +44,14 @@ public class GameManager : MonoBehaviour
 
 	private void Update()
 	{
-		if (isGameOver)
+		// if (isGameOver)
 		{
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+				SceneManager.LoadScene(0);
 			}
 		}
-		else
+		// else
 		{
 			if (currentBall == null)
 				SpawnBall();
@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour
 		if (TotalPoint >= mainManager.bestScorePlayer.score || mainManager.bestScorePlayer.IsNullOrEmpty())
 		{
 			//Debug.Log("here!");
-			mainManager.bestScorePlayer.ReplaceBestScorePlayer(MainUIHandler.Instance.GetPlayerName(), TotalPoint);
+			mainManager.bestScorePlayer.ReplaceBestScorePlayer(GameUIHandler.Instance.PlayerName, TotalPoint);
 		}
 	}
 

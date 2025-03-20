@@ -14,6 +14,11 @@ public class MainManager : MonoBehaviour
 
     private void Awake()
     {
+		if (SceneManager.GetActiveScene().name != mainSceneName)
+		{
+			Destroy(gameObject);
+		}
+
         if (Instance == null)
         {
             Instance = this;
@@ -26,6 +31,11 @@ public class MainManager : MonoBehaviour
     }
 	private void Start()
     {
+		if (SceneManager.GetActiveScene().name != mainSceneName)
+		{
+			Destroy(gameObject);
+		}
+
 		if(bestScorePlayer == null)
 		{
 			bestScorePlayer = new BestScorePlayer();
@@ -34,11 +44,15 @@ public class MainManager : MonoBehaviour
 
 	void Update()
 	{
-		if((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)) && SceneManager.Equals(SceneManager.GetActiveScene(), SceneManager.GetSceneByName(mainSceneName)))
-		{
-			//Debug.Log("same scene");
-			OnStartGame();
-		}
+        if (SceneManager.GetActiveScene().name != mainSceneName)
+        {
+            return;
+        }
+			
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+        {
+            OnStartGame();
+        }
 	}
 
     public void OnStartGame()
