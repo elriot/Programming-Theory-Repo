@@ -44,14 +44,18 @@ public class GameManager : MonoBehaviour
 
 	private void Update()
 	{
-		// if (isGameOver)
+		if(SceneManager.GetActiveScene().name != "Game")
+			return;
+
+		if (isGameOver)
 		{
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				SceneManager.LoadScene(0);
+				SceneManager.LoadScene(1);
+				return;
 			}
 		}
-		// else
+		else
 		{
 			if (currentBall == null)
 				SpawnBall();

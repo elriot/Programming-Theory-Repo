@@ -31,11 +31,6 @@ public class MainManager : MonoBehaviour
     }
 	private void Start()
     {
-		if (SceneManager.GetActiveScene().name != mainSceneName)
-		{
-			Destroy(gameObject);
-		}
-
 		if(bestScorePlayer == null)
 		{
 			bestScorePlayer = new BestScorePlayer();
@@ -44,7 +39,7 @@ public class MainManager : MonoBehaviour
 
 	void Update()
 	{
-        if (SceneManager.GetActiveScene().name != mainSceneName)
+        if (SceneManager.GetActiveScene().name != "Main")
         {
             return;
         }
