@@ -8,7 +8,9 @@ public class MainUIHandler : MonoBehaviour
 	public Slider BGMVolumeSlider;
 	public Slider SFXVolumeSlider;
 	public Button StartButton;
+	public Button ControlButton;
 	public static MainUIHandler Instance;
+	public GameObject ControlModal;
 
 	private void Awake()
 	{
@@ -41,6 +43,7 @@ public class MainUIHandler : MonoBehaviour
 		SFXVolumeSlider = GameObject.Find("SFXVolumeSlider")?.GetComponent<Slider>();
 		PlayerNameInput = GameObject.Find("PlayerNameInput")?.GetComponent<TMP_InputField>();
 		StartButton = GameObject.Find("StartButton")?.GetComponent<Button>();
+		ControlButton = GameObject.Find("ControlButton")?.GetComponent<Button>();
 
 		// Debug.Log($"FindUIElements, is bgmVolumeSlider null? {BGMVolumeSlider}");
 
@@ -100,12 +103,19 @@ public class MainUIHandler : MonoBehaviour
 	{
 		PlayerNameInput.text = PlayerPrefs.GetString("PlayerName");
 	}
+	
+	// public void ClickControlButton()
+	// {
+	// 	GameObject modal = GameObject.Find("ControlModal");
+	// 	modal.SetActive(true);
+	// 	// ControlModal.gameObject.isActive(true);
+	// }
 
 	
 
 	public void ClickStartButton()
 	{
-		PlayerPrefs.SetString("PlayerName", PlayerNameInput.text);
+		// PlayerPrefs.SetString("PlayerName", PlayerNameInput.text);
 		MainManager.Instance.OnStartGame();
 	}
 }
