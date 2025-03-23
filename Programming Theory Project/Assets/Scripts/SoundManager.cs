@@ -101,6 +101,7 @@ public class SoundManager : MonoBehaviour
 
 	public void SetBGMVolume(float volume)
 	{
+		Debug.Log($"SM : setBGMvolume {volume}");
 		PlayerPrefs.SetFloat("BGMVolume", volume);
 		if(musicSource != null)
 			musicSource.volume = volume;
@@ -108,7 +109,7 @@ public class SoundManager : MonoBehaviour
 
 	public void SetSFXVolume(float volume)
 	{
-		// Debug.Log($"SM : SetSFXVolume {volume}");
+		Debug.Log($"SM : SetSFXVolume {volume}");
 		PlayerPrefs.SetFloat("SFXVolume", volume);
 
 		if(sfxSource != null)
