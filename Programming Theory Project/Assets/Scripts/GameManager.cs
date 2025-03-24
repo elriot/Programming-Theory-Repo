@@ -202,7 +202,8 @@ public class GameManager : MonoBehaviour
 		if (TotalPoint >= mainManager.bestScorePlayer.score || mainManager.bestScorePlayer.IsNullOrEmpty())
 		{
 			//Debug.Log("here!");
-			mainManager.bestScorePlayer.ReplaceBestScorePlayer(GameUIHandler.Instance.PlayerName, TotalPoint);
+			mainManager.bestScorePlayer.ReplaceBestScorePlayer("", TotalPoint);
+			// mainManager.bestScorePlayer.ReplaceBestScorePlayer(GameUIHandler.Instance.PlayerName, TotalPoint);
 		}
 	}
 
