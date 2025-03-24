@@ -11,7 +11,7 @@ public class GameUIHandler : MonoBehaviour
 	public static GameUIHandler Instance;
 	private MainManager mainManager;
 
-	public string PlayerName {get; private set; }
+	// public string PlayerName {get; private set; }
 
 	void Awake()
 	{
@@ -27,14 +27,15 @@ public class GameUIHandler : MonoBehaviour
 	void Start()
 	{
 		mainManager = MainManager.Instance;
-		PlayerName = PlayerPrefs.GetString("PlayerName").Trim();
+		// PlayerName = PlayerPrefs.GetString("PlayerName").Trim();
 		UpdateBestScoreText();
 	}
 
 	public void UpdateCurrentScore(int score)
 	{
-		CurrentScoreText.text =$"Score : {score} ";
-		CurrentScoreText.text += $"({PlayerName ?? ""})";
+		CurrentScoreText.text = $"{score}";
+		// CurrentScoreText.text =$"Score : {score} ";
+		// CurrentScoreText.text += $"({PlayerName ?? ""})";
 	}
 
 	public void ShowGameOverScreen()
@@ -44,10 +45,11 @@ public class GameUIHandler : MonoBehaviour
 
 	private void UpdateBestScoreText()
 	{
-		BestScoreText.text = "Best Score : ";
+		BestScoreText.text = "Best : ";
 		if (mainManager.bestScorePlayer != null)
 		{
-			BestScoreText.text += mainManager.bestScorePlayer.IsNullOrEmpty() ? "No Record" : $"{mainManager.bestScorePlayer.score} ({mainManager.bestScorePlayer.name})";
+			BestScoreText.text += mainManager.bestScorePlayer.IsNullOrEmpty() ? "No Record" : $"{mainManager.bestScorePlayer.score}";
+			// BestScoreText.text += mainManager.bestScorePlayer.IsNullOrEmpty() ? "No Record" : $"{mainManager.bestScorePlayer.score} ({mainManager.bestScorePlayer.name})";
 		}
 		else
 		{

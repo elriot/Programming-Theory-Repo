@@ -44,36 +44,33 @@ public class GameManager : MonoBehaviour
 
 	private void Update()
 	{
-		if(SceneManager.GetActiveScene().name != "Game")
+		if (SceneManager.GetActiveScene().name != "Game")
 			return;
 
-		if (isGameOver)
-		{
-			if (Input.GetKeyDown(KeyCode.Space))
-			{
-				SceneManager.LoadScene(1);
-				return;
-			}
-		}
-		else
-		{
-			if(Input.GetKeyDown(KeyCode.Escape))
-			{
-				SceneManager.LoadScene(0);
-				return;
-			}
 
-			if (currentBall == null)
-				SpawnBall();
-
-			// if (!currentBall.isDropped && Input.GetKeyDown(KeyCode.Space) && ((lastInputTime == 0f) || (Time.time - lastInputTime >= inputCooldown)))
-			if (!currentBall.isDropped && Input.GetKeyDown(KeyCode.Space))
-			{
-				currentBall.Drop();
-				SoundManager.Instance.PlayDropSound();
-				// lastInputTime = Time.time;
-			}
+		if (isGameOver && Input.GetKeyDown(KeyCode.Space))
+		{
+			SceneManager.LoadScene(1);
+			return;
 		}
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			SceneManager.LoadScene(0);
+			return;
+		}
+
+		if (currentBall == null)
+			SpawnBall();
+
+		// if (!currentBall.isDropped && Input.GetKeyDown(KeyCode.Space) && ((lastInputTime == 0f) || (Time.time - lastInputTime >= inputCooldown)))
+		if (!currentBall.isDropped && Input.GetKeyDown(KeyCode.Space))
+		{
+			currentBall.Drop();
+			SoundManager.Instance.PlayDropSound();
+			// lastInputTime = Time.time;
+		}
+
 	}
 
 	void FixedUpdate()
@@ -156,7 +153,7 @@ public class GameManager : MonoBehaviour
 			return;
 		}
 
-		if (level >= ballPrefabsIndexRange+1)
+		if (level >= ballPrefabsIndexRange + 1)
 		{
 			//Debug.Log("spawn ball Range up");
 			ballPrefabsIndexRange++;
@@ -202,7 +199,8 @@ public class GameManager : MonoBehaviour
 		if (TotalPoint >= mainManager.bestScorePlayer.score || mainManager.bestScorePlayer.IsNullOrEmpty())
 		{
 			//Debug.Log("here!");
-			mainManager.bestScorePlayer.ReplaceBestScorePlayer(GameUIHandler.Instance.PlayerName, TotalPoint);
+			mainManager.bestScorePlayer.ReplaceBestScorePlayer("", TotalPoint);
+			// mainManager.bestScorePlayer.ReplaceBestScorePlayer(GameUIHandler.Instance.PlayerName, TotalPoint);
 		}
 	}
 
